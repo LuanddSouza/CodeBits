@@ -8,7 +8,7 @@ export default function Header() {
       <div className="max-w-5xl mx-auto flex justify-between items-center p-4">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold text-white-600">
-          🚀 SnippetVault
+          🚀 CodeBits
         </Link>
 
         {/* Navegação */}
@@ -19,8 +19,8 @@ export default function Header() {
           <Link href="/cadastrar" className="hover:text-blue-600">
             Adicionar
           </Link>
-          <Link href="/cadastrar" className="hover:text-blue-600">
-            Meus Snippets
+          <Link href="/publicas" className="hover:text-blue-600">
+            Snippets Publicos
           </Link>
         </nav>
       </div>
