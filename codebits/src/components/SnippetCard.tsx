@@ -6,8 +6,29 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 export default function SnippetCard({ snippet }: { snippet: Snippet }) {
   const copyCode = () => {
-    navigator.clipboard.writeText(snippet.code)
-    alert("Snippet copiado!")
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        // API moderna
+        navigator.clipboard.writeText(snippet.code)
+      } else {
+        // fallback usando textarea
+        const textArea = document.createElement("textarea")
+        textArea.value = snippet.code
+        textArea.style.position = "fixed"
+        textArea.style.top = "0"
+        textArea.style.left = "0"
+        textArea.style.opacity = "0"
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textArea)
+      }
+      //alert("✅ Snippet copiado!")
+    } catch (err) {
+      console.error(err)
+      alert("❌ Erro ao copiar snippet")
+    }
   }
 
   return (
