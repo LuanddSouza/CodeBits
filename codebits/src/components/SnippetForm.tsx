@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SnippetForm() {
   const [title, setTitle] = useState("")
@@ -30,9 +31,9 @@ export default function SnippetForm() {
     setLoading(false)
 
     if (error) {
-      alert("❌ Erro ao salvar: " + error.message)
+      toast.error("❌ Erro ao salvar: " + error.message)
     } else {
-      alert("✅ Snippet cadastrado com sucesso!")
+      toast.success("✅ Snippet cadastrado com sucesso!")
       setTitle("")
       setLanguage("")
       setDescription("")
@@ -78,8 +79,8 @@ export default function SnippetForm() {
         onChange={(e) => setVisibility(e.target.value)}
         className="w-full border p-2 rounded"
       >
-        <option value="private">Privado</option>
-        <option value="public">Público</option>
+        <option value="public" className="text-black">Público</option>
+        <option value="private" className="text-black">Privado</option>
       </select>
 
       <button

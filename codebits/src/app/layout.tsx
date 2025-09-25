@@ -1,5 +1,7 @@
 import "./globals.css"
 import Header from "@/components/Header"
+import { Toaster } from "react-hot-toast";
+
 
 export const metadata = {
   title: "CodeBits",
@@ -20,3 +22,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+
