@@ -33,7 +33,7 @@ export default function SnippetCard({
       if (navigator?.clipboard?.writeText) {
         await navigator.clipboard.writeText(snippet.code);
         setCopied(true);
-       // toast.success("✅ Código copiado!");
+        // toast.success("✅ Código copiado!");
         setTimeout(() => setCopied(false), 1500);
       } else {
         // Fallback para navegadores sem API de clipboard
@@ -45,7 +45,7 @@ export default function SnippetCard({
         document.body.removeChild(textarea);
 
         setCopied(true);
-       // toast.success("✅ Código copiado (fallback)!");
+        // toast.success("✅ Código copiado (fallback)!");
         setTimeout(() => setCopied(false), 1500);
       }
     } catch (err) {
@@ -108,12 +108,17 @@ export default function SnippetCard({
         {snippet.code}
       </SyntaxHighlighter>
 
-      <button
-        onClick={copyCode}
-        className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1"
-      >
-        {copied ? "Copiado!" : <><Copy size={16} /> Copiar</>}
-      </button>
+      <div className="flex justify-between items-center mt-2">
+        <button
+          onClick={copyCode}
+          className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1"
+        >
+          {copied ? "Copiado!" : <><Copy size={16} /> Copiar</>}
+        </button>
+
+        <h3 className="text-xs text-gray-400 mt-2">{snippet.language}</h3>
+
+      </div>
     </div>
   );
 }

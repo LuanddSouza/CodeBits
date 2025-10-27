@@ -9,7 +9,7 @@ export default function SnippetForm() {
   const [language, setLanguage] = useState("")
   const [description, setDescription] = useState("")
   const [code, setCode] = useState("")
-  const [visibility, setVisibility] = useState("private") // padrão privado
+  const [visibility, setVisibility] = useState("public")
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,8 +23,6 @@ export default function SnippetForm() {
         description,
         code,
         visibility,
-        // se já tiver Auth configurado, aqui você passaria o user_id
-        // user_id: user.id
       },
     ])
 
@@ -33,63 +31,68 @@ export default function SnippetForm() {
     if (error) {
       toast.error("❌ Erro ao salvar: " + error.message)
     } else {
-      toast.success("✅ Snippet cadastrado com sucesso!")
+      toast.success("Snippet Criado!")  
       setTitle("")
       setLanguage("")
       setDescription("")
       setCode("")
-      setVisibility("private")
+      setVisibility("public")
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        placeholder="Título"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-full border p-2 rounded"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Linguagem"
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-        className="w-full border p-2 rounded"
-        required
-      />
-      <textarea
-        placeholder="Descrição"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full border p-2 rounded"
-      />
-      <textarea
-        placeholder="Código"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="w-full border p-2 rounded font-mono"
-        rows={6}
-        required
-      />
-      <select
-        value={visibility}
-        onChange={(e) => setVisibility(e.target.value)}
-        className="w-full border p-2 rounded"
-      >
-        <option value="public" className="text-black">Público</option>
-        <option value="private" className="text-black">Privado</option>
-      </select>
+    <>
+      {/* Toaster para exibir os alerts */}
+      <Toaster position="top-right" reverseOrder={false} />
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
-        disabled={loading}
-      >
-        {loading ? "Salvando..." : "Salvar"}
-      </button>
-    </form>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Título"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Linguagem"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <textarea
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
+        <textarea
+          placeholder="Código"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          className="w-full border p-2 rounded font-mono"
+          rows={6}
+          required
+        />
+        <select
+          value={visibility}
+          onChange={(e) => setVisibility(e.target.value)}
+          className="w-full border p-2 rounded"
+        >
+          <option value="public" className="text-black">Público</option>
+          <option value="private" className="text-black">Privado</option>
+        </select>
+
+        <button
+          type="submit"
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Salvando..." : "Salvar"}
+        </button>
+      </form>
+    </>
   )
 }
