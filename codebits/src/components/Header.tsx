@@ -14,10 +14,22 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Verifica login
-  useEffect(() => {
-    const userCookie = Cookies.get("usuario");
-    setUsuario(userCookie && userCookie.trim() !== "" ? userCookie : null);
-  }, []);
+useEffect(() => {
+  const userCookie = Cookies.get("usuario");
+  if (userCookie) {
+    try {
+      //Decodifica antes de converter
+      const decoded = decodeURIComponent(userCookie);
+      const userData = JSON.parse(decoded);
+      setUsuario(userData.user);
+    } catch (error) {
+      console.error("Erro ao ler cookie de usuário:", error);
+      setUsuario(null);
+    }
+  } else {
+    setUsuario(null);
+  }
+}, []);
 
   // Fecha menu do usuário ao clicar fora
   useEffect(() => {
@@ -84,7 +96,7 @@ export default function Header() {
             {menuOpen && (
               <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 bg-gray-800 border border-gray-700 rounded-lg shadow-xl w-44 z-20 text-sm overflow-hidden">
                 <p className="px-4 py-2 text-blue-500 border-b border-gray-700 truncate">
-                  {usuario ?? "Usuário"}
+                  {usuario}
                 </p>
                 <button
                   onClick={handleLogout}

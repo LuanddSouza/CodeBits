@@ -5,51 +5,70 @@ import { supabase } from "@/lib/supabaseClient";
 import SnippetCard from "@/components/SnippetCard";
 import { Snippet } from "@/lib/snippets";
 import { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
 
-export default function Home() {
+export default function MinhasSnippets() {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState(""); 
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const snippetsPerPage = 5;
 
-  //Busca os snippets no Supabase
+  // 🔹 Busca as snippets do usuário logado
   useEffect(() => {
     const fetchSnippets = async () => {
-      const { data, error } = await supabase
-        .from("snippets")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error(error.message);
-      } else {
-        setSnippets(data || []);
+      const userCookie = Cookies.get("usuario");
+      if (!userCookie) {
+        console.warn("Nenhum usuário logado.");
+        setLoading(false);
+        return;
       }
-      setLoading(false);
+
+      try {
+        const decoded = decodeURIComponent(userCookie);
+        const userData = JSON.parse(decoded);
+        const userId = userData.id;
+
+        // 🔍 Busca apenas as snippets do usuário logado
+        const { data, error } = await supabase
+          .from("snippets")
+          .select("*")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Erro ao carregar snippets:", error.message);
+        } else {
+          setSnippets(data || []);
+        }
+      } catch (err) {
+        console.error("Erro ao ler cookie de usuário:", err);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSnippets();
   }, []);
 
-  //Reseta pra primeira página ao pesquisar
+  // 🔹 Reseta pra primeira página ao pesquisar
   useEffect(() => {
     setCurrentPage(1);
   }, [search]);
 
   if (loading) return <p className="text-white text-center mt-10">Carregando...</p>;
 
-  //Filtragem
-  const filteredSnippets = snippets.filter((snippet) =>
-    snippet.title.toLowerCase().includes(search.toLowerCase()) ||
-    snippet.description.toLowerCase().includes(search.toLowerCase())
+  // 🔹 Filtragem por título ou descrição
+  const filteredSnippets = snippets.filter(
+    (snippet) =>
+      snippet.title.toLowerCase().includes(search.toLowerCase()) ||
+      snippet.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  //Paginação
+  // 🔹 Paginação
   const indexOfLastSnippet = currentPage * snippetsPerPage;
   const indexOfFirstSnippet = indexOfLastSnippet - snippetsPerPage;
   const currentSnippets = filteredSnippets.slice(indexOfFirstSnippet, indexOfLastSnippet);
-
   const totalPages = Math.ceil(filteredSnippets.length / snippetsPerPage);
 
   return (
@@ -57,7 +76,7 @@ export default function Home() {
       <Toaster position="top-right" reverseOrder={false} />
       <h1 className="text-2xl font-bold mb-4">■ Minhas Snippets</h1>
 
-      {/*Campo de pesquisa */}
+      {/* 🔍 Campo de pesquisa */}
       <input
         type="text"
         placeholder="Pesquisar snippets..."
@@ -66,7 +85,7 @@ export default function Home() {
         className="border border-gray-600 p-2 w-full mb-6 text-white rounded-lg bg-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 outline-none"
       />
 
-      {/*Lista de snippets */}
+      {/* 🧩 Lista de snippets */}
       {filteredSnippets.length > 0 ? (
         currentSnippets.map((snippet) => (
           <SnippetCard key={snippet.id} snippet={snippet} showDelete={true} />
@@ -75,7 +94,7 @@ export default function Home() {
         <p className="text-gray-400 text-center">Nenhum snippet encontrado.</p>
       )}
 
-      {/*Controles de paginação */}
+      {/* 🔸 Paginação */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-3 mt-8">
           <button
@@ -91,11 +110,7 @@ export default function Home() {
           </span>
 
           <button
-            onClick={() =>
-              setCurrentPage((prev) =>
-                prev < totalPages ? prev + 1 : prev
-              )
-            }
+            onClick={() => setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 bg-gray-700 rounded-lg disabled:opacity-40 hover:bg-gray-600 transition"
           >

@@ -24,7 +24,6 @@ export function middleware(request: NextRequest) {
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
-
   //Caso contrário, deixa a navegação continuar normalmente
   return NextResponse.next();
 }

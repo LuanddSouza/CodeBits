@@ -18,10 +18,10 @@ export default function LoginPage() {
     setError("");
 
     try {
-      // 🔹 Busca usuário com o nome informado
+      //Busca usuário no banco
       const { data: user, error: queryError } = await supabase
         .from("usuarios")
-        .select("user, pass")
+        .select("id, user, pass")
         .eq("user", username)
         .single();
 
@@ -33,15 +33,21 @@ export default function LoginPage() {
         return;
       }
 
-      // 🔹 Login bem-sucedido → salva cookie
-      Cookies.set("usuario", user.user, { expires: 1 }); // expira em 1 dia
-      localStorage.setItem("usuario", user.user);
+      //Login bem-sucedido → salva cookie em formato JSON
+      Cookies.set(
+        "usuario",
+        JSON.stringify({
+          id: user.id,
+          user: user.user,
+        }),
+        { path: "/" }
+      );
 
       // Redireciona para a home
       router.push("/");
     } catch (err: any) {
-      setError("Erro ao fazer login.");
       console.error(err);
+      setError("Erro ao fazer login.");
     } finally {
       setLoading(false);
     }
@@ -79,9 +85,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
           <button
             type="submit"
