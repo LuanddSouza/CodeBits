@@ -74,7 +74,7 @@ export default function MinhasSnippets() {
   return (
     <main className="max-w-3xl mx-auto p-6 text-white">
       <Toaster position="top-right" reverseOrder={false} />
-      <h1 className="text-2xl font-bold mb-4">■ Minhas Snippets</h1>
+      <h1 className="text-2xl font-bold mb-4">Minhas Snippets</h1>
 
       {/* 🔍 Campo de pesquisa */}
       <input

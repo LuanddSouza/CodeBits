@@ -69,7 +69,7 @@ export default function PublicSnippets() {
 
   return (
     <main className="max-w-3xl mx-auto p-6 text-white">
-      <h1 className="text-2xl font-bold mb-4">📚 Snippets Públicos</h1>
+      <h1 className="text-2xl font-bold mb-4">Snippets Públicos</h1>
 
       {/* 🔹 Barra de busca */}
       <div className="flex flex-col md:flex-row gap-3 mb-6">
