@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import LoginLayout from "./layout";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -44,7 +45,7 @@ export default function LoginPage() {
       );
 
       // Redireciona para a home
-      router.push("/");
+      await router.push("/");
     } catch (err: any) {
       console.error(err);
       setError("Erro ao fazer login.");
