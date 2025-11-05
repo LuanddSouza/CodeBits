@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export async function deleteSnippet(id: string) {
   const { error } = await supabase.from("snippets").delete().eq("id", id);

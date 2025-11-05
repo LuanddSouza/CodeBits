@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../(site)/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import LoginLayout from "./layout";
+import LoginLayout from "../layout";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");

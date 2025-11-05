@@ -39,7 +39,7 @@ Suporte com fallback caso a API navigator.clipboard não esteja disponível.
 Next.js
 
 Supabase
- (PostgreSQL + Auth)
+ (PostgreSQL)
 
 React Syntax Highlighter
  para exibir snippets com destaque de sintaxe

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import SnippetCard from "@/components/SnippetCard";
-import { Snippet } from "@/lib/snippets";
+import { supabase } from "./lib/supabaseClient";
+import SnippetCard from "./components/SnippetCard";
+import { Snippet } from "./lib/snippets";
 import { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 

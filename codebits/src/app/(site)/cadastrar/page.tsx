@@ -1,4 +1,4 @@
-import SnippetForm from "@/components/SnippetForm"
+import SnippetForm from "../components/SnippetForm"
 
 export default function AddSnippet() {
   return (

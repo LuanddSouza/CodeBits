@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Snippet } from "@/lib/snippets";
-import { supabase } from "@/lib/supabaseClient";
-import SnippetCard from "@/components/SnippetCard";
+import type { Snippet } from "../lib/snippets";
+import { supabase } from "../lib/supabaseClient";
+import SnippetCard from "../components/SnippetCard";
 
 export default function PublicSnippets() {
   const [snippets, setSnippets] = useState<Snippet[]>([]);

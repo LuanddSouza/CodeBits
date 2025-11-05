@@ -1,7 +1,6 @@
-import "./globals.css"
-import Header from "@/components/Header"
+import "../globals.css"
+import Header from "./components/Header"
 import { Toaster } from "react-hot-toast";
-
 
 export const metadata = {
   title: "CodeBits",
