@@ -8,7 +8,6 @@ Organize, visualize, copie e compartilhe pequenos trechos de código de forma pr
 ## 📸 Demonstrações
 
 ![Minhas Snippets](/imagens/image.png)
-![Snippets Publicas](/imagens/image.png)
 
 - Página de Login  
 - Tela de Registro  
