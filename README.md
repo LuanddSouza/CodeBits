@@ -7,7 +7,6 @@ Organize, visualize, copie e compartilhe pequenos trechos de código de forma pr
 
 ## 📸 Demonstrações
 
-<<<<<<< HEAD
 ![Minhas Snippets](/imagens/image2.png)
 ![Snippets Publicas](/imagens/image3.png)
 ![Snippets formulario](/imagens/image4.png)
@@ -45,7 +44,7 @@ com organização, sintaxe colorida e uma experiência fluida.
 
 ✅ Autenticação de usuários (login / registro)  
 ✅ Cada usuário visualiza **somente seus snippets**  
-✅ Criação, exclusão e listagem de snippets  
+✅ Criação, exclusão, edição e listagem de snippets  
 ✅ Copiar código com um clique (Clipboard API)  
 ✅ Syntax highlight automático conforme a linguagem  
 ✅ Interface moderna e responsiva  
@@ -131,7 +130,7 @@ npx localtunnel --port 3000
 Desenvolvedor do projeto **CodeBits** ⚡  
 > *"Guardar conhecimento é bom, mas compartilhar snippets é melhor ainda!"*
 
-📎 [LinkedIn](www.linkedin.com/in/luanddsouza)  
+📎 [LinkedIn](https://www.linkedin.com/in/luanddsouza)  
 📎 [GitHub](https://github.com/LuanddSouza)
 
 ---
