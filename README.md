@@ -44,7 +44,7 @@ com organização, sintaxe colorida e uma experiência fluida.
 
 ✅ Autenticação de usuários (login / registro)  
 ✅ Cada usuário visualiza **somente seus snippets**  
-✅ Criação, exclusão e listagem de snippets  
+✅ Criação, exclusão, edição e listagem de snippets  
 ✅ Copiar código com um clique (Clipboard API)  
 ✅ Syntax highlight automático conforme a linguagem  
 ✅ Interface moderna e responsiva  
