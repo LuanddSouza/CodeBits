@@ -7,10 +7,11 @@ Organize, visualize, copie e compartilhe pequenos trechos de código de forma pr
 
 ## 📸 Demonstrações
 
+<<<<<<< HEAD
 ![Minhas Snippets](/imagens/image2.png)
 ![Snippets Publicas](/imagens/image3.png)
-![Snippets Publicas](/imagens/image4.png)
-![Snippets Publicas](/imagens/image5.png)
+![Snippets formulario](/imagens/image4.png)
+![Snippets ampliadas](/imagens/image5.png)
 
 - Página de Login  
 - Tela de Registro  

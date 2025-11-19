@@ -13,8 +13,12 @@ export default function MinhasSnippets() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const snippetsPerPage = 5;
+  // Mostrar botão de voltar ao topo
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // 🔹 Busca as snippets do usuário logado
+
+
+  // Busca as snippets do usuário logado
   useEffect(() => {
     const fetchSnippets = async () => {
       const userCookie = Cookies.get("usuario");
@@ -29,7 +33,7 @@ export default function MinhasSnippets() {
         const userData = JSON.parse(decoded);
         const userId = userData.id;
 
-        // 🔍 Busca apenas as snippets do usuário logado
+        //  Busca apenas as snippets do usuário logado
         const { data, error } = await supabase
           .from("snippets")
           .select("*")
@@ -56,32 +60,45 @@ export default function MinhasSnippets() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-  // 🔹 Reseta pra primeira página ao pesquisar
+  // Reseta pra primeira página ao pesquisar
   useEffect(() => {
     setCurrentPage(1);
   }, [search]);
 
-  if (loading) return <p className="text-white text-center mt-10">Carregando...</p>;
-
-  // 🔹 Filtragem por título ou descrição
+  // Filtragem por título ou descrição
   const filteredSnippets = snippets.filter(
     (snippet) =>
       snippet.title.toLowerCase().includes(search.toLowerCase()) ||
       snippet.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🔹 Paginação
+  // Paginação
   const indexOfLastSnippet = currentPage * snippetsPerPage;
   const indexOfFirstSnippet = indexOfLastSnippet - snippetsPerPage;
   const currentSnippets = filteredSnippets.slice(indexOfFirstSnippet, indexOfLastSnippet);
   const totalPages = Math.ceil(filteredSnippets.length / snippetsPerPage);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (loading) return <p className="text-white text-center mt-10">Carregando...</p>;
 
   return (
     <main className="max-w-3xl mx-auto p-6 text-white">
       <Toaster position="top-right" reverseOrder={false} />
       <h1 className="text-2xl font-bold mb-4">Minhas Snippets</h1>
 
-      {/* 🔍 Campo de pesquisa */}
+      {/* Campo de pesquisa */}
       <input
         type="text"
         placeholder="Pesquisar snippets..."
@@ -90,7 +107,7 @@ export default function MinhasSnippets() {
         className="border border-gray-600 p-2 w-full mb-6 text-white rounded-lg bg-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 outline-none"
       />
 
-      {/* 🧩 Lista de snippets */}
+      {/* Lista de snippets */}
       {filteredSnippets.length > 0 ? (
         currentSnippets.map((snippet) => (
           <SnippetCard key={snippet.id} snippet={snippet} showDelete={true} />
@@ -99,7 +116,7 @@ export default function MinhasSnippets() {
         <p className="text-gray-400 text-center">Nenhum snippet encontrado.</p>
       )}
 
-      {/* 🔸 Paginação */}
+      {/* Paginação */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-3 mt-8">
           <button
@@ -122,6 +139,15 @@ export default function MinhasSnippets() {
             Próxima →
           </button>
         </div>
+      )}
+
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 left-300 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl transition"
+        >
+          ↑
+        </button>
       )}
     </main>
   );

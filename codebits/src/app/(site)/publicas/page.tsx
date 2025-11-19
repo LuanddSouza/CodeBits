@@ -12,7 +12,9 @@ export default function PublicSnippets() {
   const [searchLanguage, setSearchLanguage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const snippetsPerPage = 5;
-
+  // Mostrar botão de voltar ao topo
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  
   // Busca snippets públicos
   useEffect(() => {
     const fetchSnippets = async () => {
@@ -50,8 +52,7 @@ export default function PublicSnippets() {
     setCurrentPage(1);
   }, [search, searchLanguage]);
 
-  if (loading)
-    return <p className="text-white text-center mt-10">Carregando snippets...</p>;
+
 
   // 🔹 Filtro por título, descrição e linguagem
   const filteredSnippets = snippets.filter(
@@ -69,7 +70,23 @@ export default function PublicSnippets() {
     indexOfFirstSnippet,
     indexOfLastSnippet
   );
+
   const totalPages = Math.ceil(filteredSnippets.length / snippetsPerPage);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (loading)
+    return <p className="text-white text-center mt-10">Carregando snippets...</p>;
 
   return (
     <main className="max-w-3xl mx-auto p-6 text-white">
@@ -129,6 +146,15 @@ export default function PublicSnippets() {
             Próxima →
           </button>
         </div>
+      )}
+
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 left-300 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl transition"
+        >
+          ↑
+        </button>
       )}
     </main>
   );

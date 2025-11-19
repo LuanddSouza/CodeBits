@@ -6,7 +6,22 @@ import toast, { Toaster } from "react-hot-toast";
 import { Maximize } from "lucide-react";
 import Cookies from "js-cookie";
 
-export default function SnippetForm({ initialData = null, mode = "create" }) {
+type SnippetData = {
+  id?: string;
+  title?: string;
+  language?: string;
+  description?: string;
+  code?: string;
+  visibility?: string;
+};
+
+export default function SnippetForm({
+  initialData = null,
+  mode = "create",
+}: {
+  initialData?: SnippetData | null;
+  mode?: "create" | "edit";
+}) {
   const [title, setTitle] = useState("");
   const [language, setLanguage] = useState("");
   const [description, setDescription] = useState("");
@@ -51,8 +66,13 @@ export default function SnippetForm({ initialData = null, mode = "create" }) {
 
     if (mode === "edit") {
       // ---------------------------
-      // 🔥 ATUALIZAÇÃO
+      // ATUALIZAÇÃO
       // ---------------------------
+      if (!initialData || !initialData.id) {
+        toast.error("Dados do snippet não encontrados para edição.");
+        setLoading(false);
+        return;
+      }
       const result = await supabase
         .from("snippets")
         .update({
@@ -67,7 +87,7 @@ export default function SnippetForm({ initialData = null, mode = "create" }) {
       error = result.error;
     } else {
       // ---------------------------
-      // 🟢 CRIAÇÃO
+      //  CRIAÇÃO
       // ---------------------------
       const result = await supabase.from("snippets").insert([
         { title, language, description, code, visibility, user_id: userId },
@@ -81,6 +101,8 @@ export default function SnippetForm({ initialData = null, mode = "create" }) {
       toast.error("❌ Erro ao salvar: " + error.message);
     } else {
       toast.success(mode === "edit" ? "Snippet atualizada!" : "Snippet criada!");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      window.location.href = "/";
     }
   };
 
