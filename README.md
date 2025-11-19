@@ -130,7 +130,7 @@ npx localtunnel --port 3000
 Desenvolvedor do projeto **CodeBits** ⚡  
 > *"Guardar conhecimento é bom, mas compartilhar snippets é melhor ainda!"*
 
-📎 [LinkedIn](www.linkedin.com/in/luanddsouza)  
+📎 [LinkedIn](https://www.linkedin.com/in/luanddsouza)  
 📎 [GitHub](https://github.com/LuanddSouza)
 
 ---
