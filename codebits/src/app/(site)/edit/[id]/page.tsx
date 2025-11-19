@@ -1,7 +1,11 @@
 import { supabase } from "../../lib/supabaseClient";
 import SnippetForm from "../../components/SnippetForm";
 
-export default async function EditSnippetPage({ params }) {
+export default async function EditSnippetPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
   const { data } = await supabase
@@ -15,7 +19,6 @@ export default async function EditSnippetPage({ params }) {
       <h1 className="text-2xl font-bold mb-4 text-white">Editar Snippet</h1>
 
       <SnippetForm initialData={data} mode="edit" />
-      
     </div>
   );
 }
