@@ -13,7 +13,7 @@ export default function PublicSnippets() {
   const [currentPage, setCurrentPage] = useState(1);
   const snippetsPerPage = 5;
 
-  // 🔹 Busca snippets públicos
+  // Busca snippets públicos
   useEffect(() => {
     const fetchSnippets = async () => {
       const { data, error } = await supabase
@@ -40,6 +40,10 @@ export default function PublicSnippets() {
 
     fetchSnippets();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   // 🔹 Resetar pra página 1 quando fizer busca
   useEffect(() => {

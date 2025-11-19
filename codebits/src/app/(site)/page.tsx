@@ -51,6 +51,11 @@ export default function MinhasSnippets() {
     fetchSnippets();
   }, []);
 
+  //ir para o topo
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   // 🔹 Reseta pra primeira página ao pesquisar
   useEffect(() => {
     setCurrentPage(1);
