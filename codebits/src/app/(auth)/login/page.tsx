@@ -14,18 +14,18 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const [usuario, setUsuario] = useState<string | null>(null);
-
+  
+  //Sempre que acessar a tela de login, limpa cookies + localStorage
+  useEffect(() => {
+    Cookies.remove("usuario", { path: "/" });
+    localStorage.removeItem("usuario");
+    setUsuario(null);
+  }, []);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    //Sempre que acessar a tela de login, limpa cookies + localStorage
-    useEffect(() => {
-      Cookies.remove("usuario", { path: "/" });
-      localStorage.removeItem("usuario");
-      setUsuario(null);
-    }, []);
 
     try {
       //Busca usuário no banco
