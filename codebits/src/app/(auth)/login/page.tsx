@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { supabase } from "../../(site)/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -12,11 +13,19 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const [usuario, setUsuario] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    //Sempre que acessar a tela de login, limpa cookies + localStorage
+    useEffect(() => {
+      Cookies.remove("usuario", { path: "/" });
+      localStorage.removeItem("usuario");
+      setUsuario(null);
+    }, []);
 
     try {
       //Busca usuário no banco
