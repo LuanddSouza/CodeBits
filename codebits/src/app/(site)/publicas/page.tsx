@@ -14,13 +14,13 @@ export default function PublicSnippets() {
   const snippetsPerPage = 5;
   // Mostrar botão de voltar ao topo
   const [showScrollTop, setShowScrollTop] = useState(false);
-  
+
   // Busca snippets públicos
   useEffect(() => {
     const fetchSnippets = async () => {
       const { data, error } = await supabase
         .from("snippets")
-        .select("id, title, language, code, description, created_at")
+        .select("id, title, language, code, description, created_at, author")
         .eq("visibility", "public");
 
       if (error) {
@@ -70,6 +70,10 @@ export default function PublicSnippets() {
     indexOfFirstSnippet,
     indexOfLastSnippet
   );
+  
+  const handleDeletedSnippet = (id: string) => {
+    setSnippets(prev => prev.filter(s => s.id !== id));
+  };
 
   const totalPages = Math.ceil(filteredSnippets.length / snippetsPerPage);
   useEffect(() => {
@@ -113,7 +117,11 @@ export default function PublicSnippets() {
       {/* 🔹 Lista de snippets */}
       {filteredSnippets.length > 0 ? (
         currentSnippets.map((snippet) => (
-          <SnippetCard key={snippet.id} snippet={snippet} />
+          <SnippetCard
+            key={snippet.id}
+            snippet={snippet}
+            onDelete={handleDeletedSnippet}
+          />
         ))
       ) : (
         <p className="text-gray-400 text-center">Nenhum snippet público encontrado.</p>
@@ -151,7 +159,12 @@ export default function PublicSnippets() {
       {showScrollTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 left-300 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl transition"
+          className="
+      fixed bottom-6 right-6
+      bg-blue-600 hover:bg-blue-700 
+      text-white p-3 rounded-xl
+      shadow-lg transition
+    "
         >
           ↑
         </button>

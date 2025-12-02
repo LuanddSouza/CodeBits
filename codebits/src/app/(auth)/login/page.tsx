@@ -22,7 +22,7 @@ export default function LoginPage() {
       //Busca usuário no banco
       const { data: user, error: queryError } = await supabase
         .from("usuarios")
-        .select("id, user, pass")
+        .select("id, user, pass, name")
         .eq("user", username)
         .single();
 
@@ -40,12 +40,13 @@ export default function LoginPage() {
         JSON.stringify({
           id: user.id,
           user: user.user,
+          name: user.name,
         }),
         { path: "/" }
       );
 
       // Redireciona para a home
-      await router.push("/");
+      await router.push("/publicas");
     } catch (err: any) {
       console.error(err);
       setError("Erro ao fazer login.");

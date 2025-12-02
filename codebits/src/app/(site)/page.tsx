@@ -72,6 +72,11 @@ export default function MinhasSnippets() {
       snippet.description.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleDeletedSnippet = (id: string) => {
+    setSnippets(prev => prev.filter(s => s.id !== id));
+  };
+
+
   // Paginação
   const indexOfLastSnippet = currentPage * snippetsPerPage;
   const indexOfFirstSnippet = indexOfLastSnippet - snippetsPerPage;
@@ -110,7 +115,13 @@ export default function MinhasSnippets() {
       {/* Lista de snippets */}
       {filteredSnippets.length > 0 ? (
         currentSnippets.map((snippet) => (
-          <SnippetCard key={snippet.id} snippet={snippet} showDelete={true} />
+          <SnippetCard
+            key={snippet.id}
+            snippet={snippet}
+            showDelete={true}
+            onDelete={handleDeletedSnippet}
+          />
+
         ))
       ) : (
         <p className="text-gray-400 text-center">Nenhum snippet encontrado.</p>

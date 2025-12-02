@@ -1,4 +1,5 @@
 export type Snippet = {
+  author: string
   id: string
   title: string
   language: string

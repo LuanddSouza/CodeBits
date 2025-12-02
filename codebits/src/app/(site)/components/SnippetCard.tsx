@@ -13,9 +13,11 @@ import { useState } from "react";
 export default function SnippetCard({
   snippet,
   showDelete = false,
+  onDelete,
 }: {
   snippet: Snippet;
   showDelete?: boolean;
+  onDelete?: (id: string) => void;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -52,11 +54,11 @@ export default function SnippetCard({
       try {
         setLoading(true);
         await deleteSnippet(snippet.id);
-        toast.success("✅ Snippet deletado!");
-        router.refresh();
+        toast.success("Snippet deletado!");
+        if (onDelete) onDelete(snippet.id);
       } catch (err) {
         console.error(err);
-        toast.error("❌ Erro ao excluir snippet");
+        toast.error("Erro ao excluir snippet");
       } finally {
         setLoading(false);
       }
@@ -89,6 +91,7 @@ export default function SnippetCard({
           </div>
 
           <p className="text-gray-300 mb-4">{snippet.description}</p>
+          <p className="text-gray-300 mb-4">username</p>
 
           <SyntaxHighlighter
             language={getLanguage(snippet.language)}
@@ -170,6 +173,9 @@ export default function SnippetCard({
       <p className="text-sm text-gray-300 mb-3 break-words">
         {snippet.description}
       </p>
+
+      <p className="text-xs text-gray-400 mb-2">Autor: {snippet.author}</p>
+
 
       <div className="rounded-lg overflow-hidden">
         <SyntaxHighlighter

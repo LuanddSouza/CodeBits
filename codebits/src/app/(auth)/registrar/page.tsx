@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ export default function RegisterPage() {
       // 🔹 Insere novo usuário
       const { error: insertError } = await supabase
         .from("usuarios")
-        .insert([{ user: username, pass: password }]);
+        .insert([{ user: username, pass: password, name: user }]);
 
       if (insertError) {
         throw insertError;
@@ -72,6 +73,17 @@ export default function RegisterPage() {
         </h1>
 
         <form onSubmit={handleRegister} className="space-y-4">
+          <div>
+            <label className="block text-gray-300 text-sm mb-2">Como deseja ser chamado?</label>
+            <input
+              type="text"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring-2 focus:ring-blue-600 outline-none"
+              placeholder="Digite seu nome"
+              required
+            />
+          </div>
           <div>
             <label className="block text-gray-300 text-sm mb-2">Usuário</label>
             <input

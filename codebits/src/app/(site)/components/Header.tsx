@@ -21,7 +21,7 @@ useEffect(() => {
       //Decodifica antes de converter
       const decoded = decodeURIComponent(userCookie);
       const userData = JSON.parse(decoded);
-      setUsuario(userData.user);
+      setUsuario(userData.name);
     } catch (error) {
       console.error("Erro ao ler cookie de usuário:", error);
       setUsuario(null);

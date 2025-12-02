@@ -13,6 +13,7 @@ type SnippetData = {
   description?: string;
   code?: string;
   visibility?: string;
+  author?: string;
 };
 
 export default function SnippetForm({
@@ -32,7 +33,7 @@ export default function SnippetForm({
   const [isMaximized, setIsMaximized] = useState(false);
   const codeRef = useRef<HTMLTextAreaElement>(null);
 
-  // Carrega os dados no modo edição
+  // Carrega dados no modo edição
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title || "");
@@ -53,8 +54,14 @@ export default function SnippetForm({
     e.preventDefault();
     setLoading(true);
 
+    // Pega o usuário logado do cookie
     const usuario = JSON.parse(Cookies.get("usuario") || "{}");
     const userId = usuario.id;
+
+    // Define o author baseado no que você salva no cookie
+    const author =
+      usuario.name ||
+      "Desconhecido";
 
     if (!userId) {
       toast.error("Usuário não identificado. Faça login novamente.");
@@ -64,15 +71,16 @@ export default function SnippetForm({
 
     let error = null;
 
+    // -------------------------------------------------------
+    // EDITAR SNIPPET
+    // -------------------------------------------------------
     if (mode === "edit") {
-      // ---------------------------
-      // ATUALIZAÇÃO
-      // ---------------------------
       if (!initialData || !initialData.id) {
         toast.error("Dados do snippet não encontrados para edição.");
         setLoading(false);
         return;
       }
+
       const result = await supabase
         .from("snippets")
         .update({
@@ -81,17 +89,29 @@ export default function SnippetForm({
           description,
           code,
           visibility,
+          author, // <-- autor atualizado
         })
         .eq("id", initialData.id);
 
       error = result.error;
-    } else {
-      // ---------------------------
-      //  CRIAÇÃO
-      // ---------------------------
+    }
+
+    // -------------------------------------------------------
+    // CRIAR NOVA SNIPPET
+    // -------------------------------------------------------
+    else {
       const result = await supabase.from("snippets").insert([
-        { title, language, description, code, visibility, user_id: userId },
+        {
+          title,
+          language,
+          description,
+          code,
+          visibility,
+          user_id: userId,
+          author, // <-- autor salvo
+        },
       ]);
+
       error = result.error;
     }
 
@@ -100,8 +120,10 @@ export default function SnippetForm({
     if (error) {
       toast.error("❌ Erro ao salvar: " + error.message);
     } else {
-      toast.success(mode === "edit" ? "Snippet atualizada!" : "Snippet criada!");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success(
+        mode === "edit" ? "Snippet atualizada!" : "Snippet criada!"
+      );
+      await new Promise((resolve) => setTimeout(resolve, 800));
       window.location.href = "/";
     }
   };
@@ -113,7 +135,6 @@ export default function SnippetForm({
       {isMaximized && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-lg flex items-center justify-center p-4 z-[9999]">
           <div className="bg-gray-900 w-full max-w-5xl rounded-xl p-6 max-h-[90vh] overflow-auto border border-gray-700">
-            
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl text-white font-semibold">
                 Editar código
@@ -138,7 +159,6 @@ export default function SnippetForm({
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-
         <input
           type="text"
           placeholder="Título"
@@ -195,7 +215,11 @@ export default function SnippetForm({
           disabled={loading}
           className="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg text-white font-semibold transition"
         >
-          {loading ? "Salvando..." : mode === "edit" ? "Atualizar Snippet" : "Salvar Snippet"}
+          {loading
+            ? "Salvando..."
+            : mode === "edit"
+            ? "Atualizar Snippet"
+            : "Salvar Snippet"}
         </button>
       </form>
     </>
