@@ -14,7 +14,13 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const [usuario, setUsuario] = useState<string | null>(null);
-  
+
+
+  useEffect(() => {
+    // ao entrar na página de login, sempre faz logout
+    supabase.auth.signOut();
+  }, []);
+
   //Sempre que acessar a tela de login, limpa cookies + localStorage
   useEffect(() => {
     Cookies.remove("usuario", { path: "/" });
