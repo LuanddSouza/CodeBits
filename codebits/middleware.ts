@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-//Função principal do middleware
 export function middleware(request: NextRequest) {
   // Lê o cookie chamado "usuario"
   const usuario = request.cookies.get("usuario")?.value;

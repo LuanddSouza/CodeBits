@@ -91,7 +91,6 @@ export default function SnippetCard({
           </div>
 
           <p className="text-gray-300 mb-4">{snippet.description}</p>
-          <p className="text-gray-300 mb-4">username</p>
 
           <SyntaxHighlighter
             language={getLanguage(snippet.language)}
